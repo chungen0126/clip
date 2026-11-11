@@ -151,15 +151,19 @@ def build_query(authors, state, since, scope="", cursors=None, role="author", pe
 
 
 class Transient(Exception):
-    """GitHub kept timing out (502/503/504) or cut the response short on this request."""
+    """GitHub kept timing out (502/503/504), cut the response short, or stopped the
+    query at its per-query resource limits on this request."""
 
 
 # stderr fragments that mean "GitHub gave up on this request, try again".
 # A timed-out query sometimes comes back as an empty or cut-off body instead of a
-# clean 502, which gh reports as a JSON parse error.
+# clean 502, which gh reports as a JSON parse error. A query that needs more than
+# GitHub allows a single request gets GraphQL errors RESOURCE_LIMITS_EXCEEDED, with
+# the PRs nulled out; the same query split smaller goes through.
 TRANSIENT = ("502", "503", "504", "timeout", "rate limit",
              "unexpected end of JSON input", "unexpected EOF", "invalid character",
-             "connection reset", "stream error")
+             "connection reset", "stream error",
+             "Resource limits for this query exceeded")
 
 
 def gh_graphql(query, retries=RETRIES):
