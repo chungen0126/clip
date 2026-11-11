@@ -1,8 +1,8 @@
-# 每兩小時列出社群成員在各專案的 PR，發佈到 GitHub Pages。
-# 一次性設定：repo Settings -> Pages -> Source 選 "GitHub Actions"。
+# Every two hours, list community members' PRs across the tracked projects and publish them to GitHub Pages.
+# One-time setup: repo Settings -> Pages -> Source: "GitHub Actions".
 #   https://opensource4you.github.io/clip/             open PRs
-#   https://opensource4you.github.io/clip/merged.html  最近 30 天 merged
-#   https://opensource4you.github.io/clip/reviews.html 最近 30 天 review 過別人的 PR
+#   https://opensource4you.github.io/clip/merged.html  merged in the last 30 days
+#   https://opensource4you.github.io/clip/reviews.html other people's PRs they reviewed in the last 30 days
 
 name: community-prs
 
@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # runner 內建 gh，只需要這個
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # gh is preinstalled on the runner; it only needs this
     defaults:
       run:
         working-directory: github
